@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; //api calls to backend
+import { shortenUrl } from './api';
 import './App.css';
 
 function App() {
@@ -7,13 +7,13 @@ function App() {
   const [shortUrl, setShortUrl] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //prevent page reload
     try {
-      const response = await axios.get(`https://you-api-gateway-endpoint/shorten?url=${encodeURIComponent(longUrl)}`);
+      const shortUrl = await shortenUrl(longUrl);
 
-      setShortUrl(response.data.body); //what lambda returns
+      setShortUrl(shortUrl); //what lambda returns
     } catch (error) {
-      console.error("Error shortening URL:", error);
+      alert(error.message);
     }
   };
 
