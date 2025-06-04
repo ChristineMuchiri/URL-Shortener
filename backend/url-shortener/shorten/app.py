@@ -22,7 +22,7 @@ def lambda_handler(event, context):
     #return short URl
         return {
         "statusCode": 200,
-        "body": json.dumps({"short_url": f"http:localhost:3000/{short_code}"})
+        "body": json.dumps({"short_url": f"cuttly.space/{short_code}"})
     }
     # parse incoming request body
     except Exception as e:
