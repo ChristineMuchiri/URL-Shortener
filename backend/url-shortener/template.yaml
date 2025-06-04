@@ -52,11 +52,17 @@ Resources:
           Properties:
             RestApiId: !Ref UrlShortenerApi
             Path: /shorten
-            Method: post
-            
+            Method: post            
       Environment:
         Variables:
           TABLE_NAME: UrlTable
+      Policies: 
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:PutItem
+              Resource: !GetAtt UrlTable.Arn
   
   RedirectFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -77,3 +83,11 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: UrlTable
+
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+              Resource: !GetAtt UrlTable.Arn
