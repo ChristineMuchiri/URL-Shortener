@@ -22,6 +22,8 @@ def lambda_handler(event, context):
     #return short URl
         return {
         "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Origin": "https://www.cuttly.space"},
         "body": json.dumps({"short_url": f"cuttly.space/{short_code}"})
     }
     # parse incoming request body
