@@ -6,8 +6,13 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(os.environ['TABLE_NAME'])
 
 def lambda_handler(event, context):
-    short_code = event['pathParameters']['short_code']
+    short_code = event['pathParameters'].get('short_code')
     # extract short code from URL path
+    if not short_code:
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"error": "Missing short_code"})
+        }
         
     try:   
     # look up original URL in dynamodb
@@ -28,8 +33,7 @@ def lambda_handler(event, context):
             "statusCode": 301,
             "headers": {
             "Location": item["original_url"],
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "*"
+                "Access-Control-Allow-Origin": "*"
         },
             "body": ""
     }
